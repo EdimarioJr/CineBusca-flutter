@@ -9,10 +9,6 @@ class ContainerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text("Cinebusca App"),
-        ),
         body: Container(
             width: 430,
             color: Color.fromRGBO(32, 36, 42, 1),

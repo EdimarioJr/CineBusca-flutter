@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'header_button.dart';
+import '../ActionButton/actionbutton.dart';
 
 class FormHeader extends StatefulWidget {
   @override
@@ -21,16 +21,20 @@ class _FormHeaderState extends State<FormHeader> {
               Expanded(
                   flex: 7,
                   child: Container(
-                      width: 200,
                       child: TextFormField(
-                        decoration: const InputDecoration(
-                            filled: true,
-                            hintText: "Search by film title",
-                            border: const OutlineInputBorder(),
-                            fillColor: Color.fromRGBO(255, 255, 255, 1),
-                            contentPadding: const EdgeInsets.only(left: 10.0)),
-                      ))),
-              HeaderButton(buttonText: "Go!")
+                    decoration: const InputDecoration(
+                        filled: true,
+                        hintText: "Search by film title",
+                        border: const OutlineInputBorder(),
+                        fillColor: Color.fromRGBO(255, 255, 255, 1),
+                        contentPadding: const EdgeInsets.only(left: 10.0)),
+                  ))),
+              ActionButton(
+                textButton: "Go!",
+                verticalPadding: 15.5,
+                horizontalPadding: 15.0,
+                onPressedFunc: () => {},
+              )
             ],
           ),
         ));

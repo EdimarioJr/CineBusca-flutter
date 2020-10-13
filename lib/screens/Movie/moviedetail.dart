@@ -27,7 +27,7 @@ class MovieDetail extends StatefulWidget {
 class _MovieDetailState extends State<MovieDetail> {
   void postToUserWatchlist() async {
     JwtModel jwtModel = Provider.of<JwtModel>(context, listen: false);
-    var response = await http.post('http://192.168.18.6:3000/user/watchlist',
+    var response = await http.post('http://10.0.0.41:3000/user/watchlist',
         body: {'idMovie': '${widget.idMovie}'},
         headers: {'Authorization': 'Bearer ${jwtModel.getToken()}'});
 

@@ -70,9 +70,9 @@ class _LoginFormState extends State<LoginForm> {
                         print(userNameController.text);
                         print(userPasswordController.text);
                         var responseLogin = await http.post(
-                            'http://192.168.18.6:3000/user/${createUser ? '' : 'login'}',
+                            'http://10.0.0.41:3000/user/${createUser ? '' : 'login'}',
                             body: {
-                              'username': userNameController.text,
+                              'name': userNameController.text,
                               'password': userPasswordController.text
                             });
 
@@ -80,7 +80,7 @@ class _LoginFormState extends State<LoginForm> {
                         print(respostaLogin);
                         if (createUser == true) {
                           Scaffold.of(context).showSnackBar(SnackBar(
-                            content: Text("Erro durante criação do Usuário!"),
+                            content: Text(respostaLogin['message']),
                             backgroundColor: respostaLogin['op']
                                 ? Colors.blueAccent
                                 : Colors.redAccent,

@@ -16,7 +16,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
 
   void fetchWatchlist() async {
     JwtModel jwtModel = Provider.of<JwtModel>(context);
-    var response = await http.get('http://192.168.18.6:3000/user/watchlist',
+    var response = await http.get('http://10.0.0.41:3000/user/watchlist',
         headers: {'Authorization': 'Bearer ${jwtModel.getToken()}'});
     print(response.body);
     var userW = jsonDecode(response.body);
@@ -31,7 +31,6 @@ class _WatchlistPageState extends State<WatchlistPage> {
       var response = await http.get(
           "https://api.themoviedb.org/3/movie/${watchlist[i]}?api_key=0d278f2443cc885c267b521e19ea320e");
       var movie = jsonDecode(response.body);
-      print(movie);
       userW.add(new MovieCard(
         movieDirector: "Dallas Jackson",
         movieDescription: movie['overview'],

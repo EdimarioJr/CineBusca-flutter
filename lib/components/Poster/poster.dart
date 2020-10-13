@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 class Poster extends StatelessWidget {
   final String urlCover;
 
-  Poster({this.urlCover}) {
-    print(this.urlCover);
-  }
+  Poster({this.urlCover});
   @override
   Widget build(BuildContext context) {
     return this.urlCover != null

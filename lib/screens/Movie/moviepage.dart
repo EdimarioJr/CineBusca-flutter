@@ -9,13 +9,15 @@ class MoviePage extends StatelessWidget {
   final String movieScore;
   final String movieDescription;
   final String urlPoster;
+  final int idMovie;
 
   MoviePage(
       {this.movieDescription,
       this.movieDirector,
       this.movieScore,
       this.movieTitle,
-      this.urlPoster});
+      this.urlPoster,
+      this.idMovie});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,7 @@ class MoviePage extends StatelessWidget {
                 movieScore: this.movieScore,
                 movieTitle: this.movieTitle,
                 urlPoster: this.urlPoster,
+                idMovie: this.idMovie,
               )
             ],
           ),

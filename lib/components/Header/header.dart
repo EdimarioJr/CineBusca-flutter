@@ -1,4 +1,9 @@
+import 'package:cinebusca_front/providers/jwt_model.dart';
+import 'package:cinebusca_front/screens/Watchlist/watchlistpage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:provider/provider.dart';
 import 'form_header.dart';
 import 'header_button.dart';
 
@@ -20,11 +25,64 @@ class _HeaderState extends State<Header> {
         children: [
           Container(
             padding: const EdgeInsets.only(bottom: 15.0),
-            child: Center(
-                child: Image(
-                    image: AssetImage('assets/cinebusca_logo.png'),
-                    width: 100,
-                    height: 100)),
+            child: Row(children: [
+              Image(
+                  image: AssetImage('assets/cinebusca_logo.png'),
+                  width: 100,
+                  height: 100),
+              Consumer<JwtModel>(
+                builder: (context, jwtModel, widget) {
+                  if (jwtModel.isLogged()) {
+                    Map<String, dynamic> jwtDecoded =
+                        JwtDecoder.decode(jwtModel.getToken());
+                    String username = jwtDecoded['username'];
+                    return Row(children: [
+                      Column(
+                        children: [
+                          Text(
+                            "Oi, $username",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          ElevatedButton(
+                            autofocus: true,
+                            clipBehavior: Clip.antiAlias,
+                            style: new ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  Color.fromRGBO(16, 126, 229, 1)),
+                              padding: MaterialStateProperty.all<EdgeInsets>(
+                                  EdgeInsets.symmetric(
+                                      vertical: 15.5, horizontal: 15.0)),
+                            ),
+                            child: Text("Logout"),
+                            onPressed: () => {jwtModel.deleteToken()},
+                          )
+                        ],
+                      ),
+                      ElevatedButton(
+                        autofocus: true,
+                        clipBehavior: Clip.antiAlias,
+                        style: new ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              Color.fromRGBO(16, 126, 229, 1)),
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              EdgeInsets.symmetric(
+                                  vertical: 15.5, horizontal: 15.0)),
+                        ),
+                        child: Text("Watchlist"),
+                        onPressed: () => {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => WatchlistPage()))
+                        },
+                      )
+                    ]);
+                  }
+
+                  return Container();
+                },
+              )
+            ]),
           ),
           // SizedBox define uma altura / largura para Column,Row, Flex..
           SizedBox(
@@ -40,7 +98,11 @@ class _HeaderState extends State<Header> {
                         margin: EdgeInsets.only(right: 10.0),
                         child: FormHeader()),
                   ),
-                  Expanded(flex: 3, child: HeaderButton(buttonText: "Sign in"))
+                  Expanded(
+                      flex: 3,
+                      child: HeaderButton(
+                        buttonText: "Sign in",
+                      ))
                 ],
               )),
         ],

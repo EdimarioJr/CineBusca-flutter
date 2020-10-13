@@ -65,10 +65,11 @@ class _GridMoviesState extends State<GridMovies> {
               } else
                 return Center(
                     child: new MovieCard(
-                  urlCover: 'https://image.tmdb.org/t/p/w342/$caminhoPoster',
+                  urlCover: 'https://image.tmdb.org/t/p/w342$caminhoPoster',
                   movieTitle: movies[index]['title'],
                   movieScore: movies[index]['vote_average'].toString(),
                   movieDescription: movies[index]['overview'],
+                  idMovie: movies[index]['id'],
                 ));
             }));
   }

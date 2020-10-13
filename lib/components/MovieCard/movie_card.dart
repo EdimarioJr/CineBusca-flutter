@@ -8,13 +8,15 @@ class MovieCard extends StatelessWidget {
   final String movieScore;
   final String movieDescription;
   final String movieDirector;
+  final int idMovie;
 
   MovieCard(
       {this.urlCover,
       this.movieScore,
       this.movieTitle,
       this.movieDescription,
-      this.movieDirector});
+      this.movieDirector,
+      this.idMovie});
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +26,12 @@ class MovieCard extends StatelessWidget {
               context,
               CupertinoPageRoute(
                   builder: (context) => MoviePage(
-                        urlPoster: this.urlCover,
-                        movieScore: this.movieScore,
-                        movieTitle: this.movieTitle,
-                        movieDescription: this.movieDescription,
-                        movieDirector: this.movieDirector,
-                      )));
+                      urlPoster: this.urlCover,
+                      movieScore: this.movieScore,
+                      movieTitle: this.movieTitle,
+                      movieDescription: this.movieDescription,
+                      movieDirector: this.movieDirector,
+                      idMovie: this.idMovie)));
         },
         child: Container(
             width: 250,
@@ -37,7 +39,7 @@ class MovieCard extends StatelessWidget {
             margin: EdgeInsets.only(bottom: 10.0),
             padding: EdgeInsets.all(10.0),
             decoration: new BoxDecoration(
-              color: Colors.black,
+              color: Color.fromRGBO(56, 61, 72, 1),
             ),
             child: Center(
               child: Column(

@@ -1,3 +1,5 @@
+import 'package:cinebusca_front/screens/Login/loginpage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HeaderButton extends StatelessWidget {
@@ -17,7 +19,10 @@ class HeaderButton extends StatelessWidget {
             EdgeInsets.symmetric(vertical: 15.5, horizontal: 15.0)),
       ),
       child: Text(this.buttonText),
-      onPressed: () => {},
+      onPressed: () => {
+        Navigator.push(
+            context, CupertinoPageRoute(builder: (context) => LoginPage()))
+      },
     );
   }
 }

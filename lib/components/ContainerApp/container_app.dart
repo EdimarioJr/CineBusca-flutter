@@ -11,9 +11,13 @@ class ContainerApp extends StatelessWidget {
     return Scaffold(
         body: Container(
             width: 430,
-            color: Color.fromRGBO(32, 36, 42, 1),
-            child: Column(
-              children: [Header(), this.childWidget],
-            )));
+            color: Color.fromRGBO(20, 20, 21, 1),
+            child: SingleChildScrollView(
+                child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                children: [Header(), this.childWidget],
+              ),
+            ))));
   }
 }

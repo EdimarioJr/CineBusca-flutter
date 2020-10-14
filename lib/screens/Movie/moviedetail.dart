@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:ui';
+import 'package:cinebusca_front/components/ActionButton/actionbutton.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinebusca_front/providers/jwt_model.dart';
 import 'package:flutter/material.dart';
@@ -25,13 +27,78 @@ class MovieDetail extends StatefulWidget {
 }
 
 class _MovieDetailState extends State<MovieDetail> {
+  bool isMovieInWatchlist = false;
+
   void postToUserWatchlist() async {
+    // Listen = false por que esse método só altera o estado global,
+    // não é afetado por ele, então não precisa ficar "acompanhando" o estado global
     JwtModel jwtModel = Provider.of<JwtModel>(context, listen: false);
     var response = await http.post('http://10.0.0.41:3000/user/watchlist',
-        body: {'idMovie': '${widget.idMovie}'},
+        body: {'idMovie': '${widget.idMovie.toInt()}'},
         headers: {'Authorization': 'Bearer ${jwtModel.getToken()}'});
 
+    if (jsonDecode(response.body)['op'] == true) {
+      setState(() {
+        isMovieInWatchlist = true;
+      });
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Filme adicionado a sua watchlist!"),
+        backgroundColor: Colors.blueAccent,
+      ));
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Algum erro ocorreu :/"),
+        backgroundColor: Colors.redAccent,
+      ));
+    }
     print(response.body);
+  }
+
+  void isMovieIn() async {
+    JwtModel jwtModel = Provider.of<JwtModel>(context, listen: false);
+    var response = await http.get('http://10.0.0.41:3000/user/watchlist',
+        headers: {'Authorization': 'Bearer ${jwtModel.getToken()}'});
+    var resposta = jsonDecode(response.body);
+    if (resposta['op'] == true) {
+      if (resposta['watchlist'].indexOf(widget.idMovie.toString()) != -1) {
+        setState(() {
+          isMovieInWatchlist = true;
+        });
+      }
+    } else {
+      print(resposta);
+    }
+  }
+
+  void deleteFromWatchlist() async {
+    JwtModel jwtModel = Provider.of<JwtModel>(context, listen: false);
+    var response = await http.delete(
+        'http://10.0.0.41:3000/user/watchlist/${widget.idMovie}',
+        headers: {'Authorization': 'Bearer ${jwtModel.getToken()}'});
+
+    if (jsonDecode(response.body)['op'] == true) {
+      setState(() {
+        isMovieInWatchlist = false;
+      });
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Filme retirado da sua watchlist!"),
+        backgroundColor: Colors.blueAccent,
+      ));
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Algum erro ocorreu :/"),
+        backgroundColor: Colors.redAccent,
+      ));
+    }
+    print(response.body);
+  }
+
+  @override
+  // ignore: must_call_super
+  void didChangeDependencies() {
+    // ignore: todo
+    // TODO: implement didChangeDependencies
+    isMovieIn();
   }
 
   @override
@@ -75,21 +142,19 @@ class _MovieDetailState extends State<MovieDetail> {
                           Consumer<JwtModel>(
                             builder: (context, jwtModel, widget) {
                               if (jwtModel.isLogged()) {
-                                return ElevatedButton(
-                                  autofocus: true,
-                                  clipBehavior: Clip.antiAlias,
-                                  style: new ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            Color.fromRGBO(16, 126, 229, 1)),
-                                    padding:
-                                        MaterialStateProperty.all<EdgeInsets>(
-                                            EdgeInsets.symmetric(
-                                                vertical: 15.5,
-                                                horizontal: 15.0)),
+                                return Container(
+                                  margin: EdgeInsets.only(top: 20),
+                                  child: ActionButton(
+                                    textButton: isMovieInWatchlist
+                                        ? "Remove from watchlist"
+                                        : "Add to Watchlist",
+                                    verticalPadding: 20,
+                                    horizontalPadding: 30,
+                                    isBlue: isMovieInWatchlist ? false : true,
+                                    onPressedFunc: isMovieInWatchlist
+                                        ? deleteFromWatchlist
+                                        : postToUserWatchlist,
                                   ),
-                                  child: Text('Add to watchlist'),
-                                  onPressed: () => {postToUserWatchlist()},
                                 );
                               } else
                                 return Container();

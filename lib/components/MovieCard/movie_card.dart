@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import '../../screens/Movie/MoviePage.dart';
 
 class MovieCard extends StatelessWidget {
@@ -20,58 +21,48 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              CupertinoPageRoute(
-                  builder: (context) => MoviePage(
-                      urlPoster: this.urlCover,
-                      movieScore: this.movieScore,
-                      movieTitle: this.movieTitle,
-                      movieDescription: this.movieDescription,
-                      movieDirector: this.movieDirector,
-                      idMovie: this.idMovie)));
-        },
-        child: Container(
-            width: 250,
-            height: 400,
-            margin: EdgeInsets.only(bottom: 10.0),
-            padding: EdgeInsets.all(10.0),
-            decoration: new BoxDecoration(
-              color: Color.fromRGBO(56, 61, 72, 1),
-            ),
-            child: Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Image.network(
-                    urlCover,
-                    width: 210,
-                    height: 320,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      this.movieScore,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 210,
-                    child: Text(this.movieTitle,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: TextStyle(
-                          color: Colors.white,
-                        )),
-                  )
-                ],
+    return Container(
+        padding: EdgeInsets.all(10.0),
+        decoration: new BoxDecoration(
+          color: Color.fromRGBO(56, 61, 72, 1),
+        ),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                CupertinoPageRoute(
+                    builder: (context) => MoviePage(
+                        urlPoster: this.urlCover,
+                        movieScore: this.movieScore,
+                        movieTitle: this.movieTitle,
+                        movieDescription: this.movieDescription,
+                        movieDirector: this.movieDirector,
+                        idMovie: this.idMovie)));
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.network(
+                urlCover,
               ),
-            )));
+              Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  this.movieScore,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                ),
+              ),
+              Text(this.movieTitle,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 2,
+                  style: TextStyle(
+                    color: Colors.white,
+                  )),
+            ],
+          ),
+        ));
   }
 }

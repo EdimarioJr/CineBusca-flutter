@@ -11,6 +11,7 @@ class GridMovies extends StatefulWidget {
 class _GridMoviesState extends State<GridMovies> {
   List<dynamic> movies;
   int paginaAtual;
+  int nItems = 0;
   ScrollController _scrollController = new ScrollController();
   bool isFetchingMovies = true;
 
@@ -28,6 +29,7 @@ class _GridMoviesState extends State<GridMovies> {
           ? movies = [...movies, ...resposta['results']]
           : movies = resposta['results'];
       print(movies.length);
+      nItems = movies.length;
       isFetchingMovies = false;
     });
   }
@@ -47,30 +49,35 @@ class _GridMoviesState extends State<GridMovies> {
   @override
   Widget build(BuildContext context) {
     return Flexible(
-        child: ListView.builder(
+        child: GridView.count(
             controller: _scrollController,
-            itemCount: movies != null ? movies.length : 0,
-            itemBuilder: (BuildContext context, int index) {
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            // Numero de colunas
+            crossAxisCount: 2,
+            // Define o tamanho da Row da grid, ou o height dos grid items
+            childAspectRatio: 0.55,
+            // os Grid gap
+            mainAxisSpacing: 15.0,
+            crossAxisSpacing: 15.0,
+            // Nesse sentido é parecido com listview.builder, apesar do gridview tambem ter o builder
+            // para lidar com requisições a api e grids "infinitos"
+            children: List.generate(nItems, (index) {
               String caminhoPoster = movies[index]['poster_path'];
               if (movies.length == index + 1) {
                 return Padding(
-                  padding: EdgeInsets.all(10.0),
-                  child: Center(
-                    child: Opacity(
-                      opacity: 1,
+                    padding: EdgeInsets.all(10.0),
+                    child: Center(
                       child: new CircularProgressIndicator(),
-                    ),
-                  ),
-                );
-              } else
-                return Center(
-                    child: new MovieCard(
+                    ));
+              } else {
+                return new MovieCard(
                   urlCover: 'https://image.tmdb.org/t/p/w342$caminhoPoster',
                   movieTitle: movies[index]['title'],
                   movieScore: movies[index]['vote_average'].toString(),
                   movieDescription: movies[index]['overview'],
                   idMovie: movies[index]['id'],
-                ));
-            }));
+                );
+              }
+            })));
   }
 }

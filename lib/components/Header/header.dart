@@ -10,6 +10,9 @@ import 'form_header.dart';
 import '../ActionButton/actionbutton.dart';
 
 class Header extends StatefulWidget {
+  final bool isInSearchPage;
+
+  Header({this.isInSearchPage = false});
   @override
   _HeaderState createState() => _HeaderState();
 }
@@ -92,7 +95,8 @@ class _HeaderState extends State<Header> {
                     flex: 7,
                     child: Container(
                         margin: EdgeInsets.only(right: 10.0),
-                        child: FormHeader()),
+                        child:
+                            FormHeader(isInSearchPage: widget.isInSearchPage)),
                   ),
                   Expanded(
                       flex: 3,

@@ -4,7 +4,6 @@ import '../../components/Poster/poster.dart';
 import './moviedetail.dart';
 
 class MoviePage extends StatelessWidget {
-  final String movieDirector;
   final String movieTitle;
   final String movieScore;
   final String movieDescription;
@@ -13,7 +12,6 @@ class MoviePage extends StatelessWidget {
 
   MoviePage(
       {this.movieDescription,
-      this.movieDirector,
       this.movieScore,
       this.movieTitle,
       this.urlPoster,
@@ -29,7 +27,6 @@ class MoviePage extends StatelessWidget {
               Poster(urlCover: this.urlPoster),
               MovieDetail(
                 movieDescription: this.movieDescription,
-                movieDirector: this.movieDirector,
                 movieScore: this.movieScore,
                 movieTitle: this.movieTitle,
                 urlPoster: this.urlPoster,

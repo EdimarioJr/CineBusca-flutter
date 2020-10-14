@@ -40,7 +40,6 @@ class _WatchlistPageState extends State<WatchlistPage> {
           "https://api.themoviedb.org/3/movie/${watchlist[i]}?api_key=0d278f2443cc885c267b521e19ea320e");
       var movie = jsonDecode(response.body);
       userW.add(new MovieCard(
-        movieDirector: "Dallas Jackson",
         movieDescription: movie['overview'],
         movieScore: movie['vote_average'].toString(),
         movieTitle: movie['title'],

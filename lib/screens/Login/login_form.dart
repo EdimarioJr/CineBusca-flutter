@@ -67,8 +67,6 @@ class _LoginFormState extends State<LoginForm> {
                     ),
                     onPressed: () async {
                       if (_formKey.currentState.validate()) {
-                        print(userNameController.text);
-                        print(userPasswordController.text);
                         var responseLogin = await http.post(
                             'http://10.0.0.41:3000/user/${createUser ? '' : 'login'}',
                             body: {

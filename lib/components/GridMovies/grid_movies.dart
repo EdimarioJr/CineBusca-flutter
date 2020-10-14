@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../components/MovieCard/movie_card.dart';
+import '../MovieCard/movie_card.dart';
 
 class GridMovies extends StatefulWidget {
+  final String query;
+
+  GridMovies({this.query = ''});
+
   @override
   _GridMoviesState createState() => _GridMoviesState();
 }
@@ -20,8 +24,9 @@ class _GridMoviesState extends State<GridMovies> {
     setState(() {
       isFetchingMovies = true;
     });
-    final response = await http.get(
-        "https://api.themoviedb.org/3/discover/movie?api_key=0d278f2443cc885c267b521e19ea320e&sort_by=popularity.desc&page=$s");
+    final response = await http.get(widget.query == ''
+        ? "https://api.themoviedb.org/3/discover/movie?api_key=0d278f2443cc885c267b521e19ea320e&sort_by=popularity.desc&page=$s"
+        : "https://api.themoviedb.org/3/search/movie?api_key=0d278f2443cc885c267b521e19ea320e&query=${widget.query}&include_adult=false&page=$s");
     this.setState(() {
       var resposta = jsonDecode(response.body);
       paginaAtual = pag;
@@ -51,11 +56,11 @@ class _GridMoviesState extends State<GridMovies> {
     return Flexible(
         child: GridView.count(
             controller: _scrollController,
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: EdgeInsets.all(8.0),
             // Numero de colunas
             crossAxisCount: 2,
             // Define o tamanho da Row da grid, ou o height dos grid items
-            childAspectRatio: 0.55,
+            childAspectRatio: 0.54,
             // os Grid gap
             mainAxisSpacing: 15.0,
             crossAxisSpacing: 15.0,
@@ -63,7 +68,7 @@ class _GridMoviesState extends State<GridMovies> {
             // para lidar com requisições a api e grids "infinitos"
             children: List.generate(nItems, (index) {
               String caminhoPoster = movies[index]['poster_path'];
-              if (movies.length == index + 1) {
+              if (movies.length == index) {
                 return Padding(
                     padding: EdgeInsets.all(10.0),
                     child: Center(

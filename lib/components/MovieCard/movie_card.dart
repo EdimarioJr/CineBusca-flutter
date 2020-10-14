@@ -8,7 +8,6 @@ class MovieCard extends StatelessWidget {
   final String movieTitle;
   final String movieScore;
   final String movieDescription;
-  final String movieDirector;
   final int idMovie;
 
   MovieCard(
@@ -16,7 +15,6 @@ class MovieCard extends StatelessWidget {
       this.movieScore,
       this.movieTitle,
       this.movieDescription,
-      this.movieDirector,
       this.idMovie});
 
   @override
@@ -36,7 +34,6 @@ class MovieCard extends StatelessWidget {
                         movieScore: this.movieScore,
                         movieTitle: this.movieTitle,
                         movieDescription: this.movieDescription,
-                        movieDirector: this.movieDirector,
                         idMovie: this.idMovie)));
           },
           child: Column(
@@ -44,6 +41,7 @@ class MovieCard extends StatelessWidget {
             children: [
               Image.network(
                 urlCover,
+                height: 230,
               ),
               Padding(
                 padding: EdgeInsets.only(top: 8.0),

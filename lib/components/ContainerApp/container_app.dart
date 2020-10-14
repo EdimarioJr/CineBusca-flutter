@@ -10,7 +10,7 @@ class ContainerApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            width: 430,
+            width: MediaQuery.of(context).size.width,
             color: Color.fromRGBO(20, 20, 21, 1),
             child: SingleChildScrollView(
                 child: SizedBox(

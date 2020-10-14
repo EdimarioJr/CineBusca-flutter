@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class MovieDetail extends StatefulWidget {
-  final String movieDirector;
   final String movieTitle;
   final String movieScore;
   final String movieDescription;
@@ -17,7 +16,6 @@ class MovieDetail extends StatefulWidget {
   MovieDetail(
       {this.movieDescription,
       this.movieTitle,
-      this.movieDirector,
       this.movieScore,
       this.urlPoster,
       this.idMovie});
@@ -28,6 +26,7 @@ class MovieDetail extends StatefulWidget {
 
 class _MovieDetailState extends State<MovieDetail> {
   bool isMovieInWatchlist = false;
+  String movieDirector;
 
   void postToUserWatchlist() async {
     // Listen = false por que esse método só altera o estado global,
@@ -93,12 +92,31 @@ class _MovieDetailState extends State<MovieDetail> {
     print(response.body);
   }
 
+  void fetchMovieDirector() async {
+    var response = await http.get(
+        'https://api.themoviedb.org/3/movie/${widget.idMovie}/credits?api_key=0d278f2443cc885c267b521e19ea320e');
+    var resposta = jsonDecode(response.body);
+    String diretor = '';
+    resposta['crew'].forEach((elemento) {
+      if (elemento['job'] == 'Director') diretor = elemento['name'];
+    });
+    setState(() {
+      this.movieDirector = diretor;
+    });
+  }
+
   @override
   // ignore: must_call_super
   void didChangeDependencies() {
     // ignore: todo
     // TODO: implement didChangeDependencies
     isMovieIn();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMovieDirector();
   }
 
   @override
@@ -127,14 +145,18 @@ class _MovieDetailState extends State<MovieDetail> {
                         children: [
                           Center(
                               child: MovieHeader(
-                            movieDirector: 'Dallas Jackson',
+                            movieDirector:
+                                movieDirector != null ? this.movieDirector : '',
                             movieTitle: this.widget.movieTitle,
                           )),
-                          Text(this.widget.movieScore,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20)),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 10.0),
+                            child: Text(this.widget.movieScore,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20)),
+                          ),
                           Text(
                             this.widget.movieDescription,
                             style: TextStyle(color: Colors.white),
@@ -177,6 +199,7 @@ class MovieHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        alignment: Alignment.topLeft,
         margin: EdgeInsets.only(bottom: 10.0),
         child: RichText(
           text: TextSpan(

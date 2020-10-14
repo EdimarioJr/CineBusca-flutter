@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../components/ContainerApp/container_app.dart';
-import './grid_movies.dart';
+import '../../components/GridMovies/grid_movies.dart';
 
 class Homepage extends StatelessWidget {
   @override

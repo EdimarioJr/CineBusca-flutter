@@ -20,7 +20,6 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   // GlobalKey serve para identificar unicamente um form, assim podemos usar os controllers de texto
   // nos campos e facilitar a vida na manipulação e captura de valores em um formulário.
-  final _formKey = GlobalKey<FormState>();
   String titleMovie = '';
 
   @override

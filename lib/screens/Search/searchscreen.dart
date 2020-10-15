@@ -10,6 +10,8 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  bool mudouPesquisa = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +22,10 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             Header(isInSearchPage: true),
             Consumer<SearchModel>(builder: (context, searchModel, widget) {
-              if (searchModel.getSearch() != '')
-                return new GridMovies(query: searchModel.getSearch());
+              print("consumer search ${searchModel.getSearch()}");
+              if (searchModel.getSearch() != '') {
+                return GridMovies(query: searchModel.getSearch());
+              }
               return Container();
             }),
           ],

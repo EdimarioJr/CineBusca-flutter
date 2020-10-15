@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:ui';
 import 'package:cinebusca_front/components/ActionButton/actionbutton.dart';
+import 'package:cinebusca_front/screens/Review/reviewpage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:cinebusca_front/providers/jwt_model.dart';
 import 'package:flutter/material.dart';
@@ -12,13 +14,15 @@ class MovieDetail extends StatefulWidget {
   final String movieDescription;
   final String urlPoster;
   final int idMovie;
+  final String movieDirector;
 
   MovieDetail(
       {this.movieDescription,
       this.movieTitle,
       this.movieScore,
       this.urlPoster,
-      this.idMovie});
+      this.idMovie,
+      this.movieDirector});
 
   @override
   _MovieDetailState createState() => _MovieDetailState();
@@ -26,7 +30,7 @@ class MovieDetail extends StatefulWidget {
 
 class _MovieDetailState extends State<MovieDetail> {
   bool isMovieInWatchlist = false;
-  String movieDirector;
+  bool doingReview = false;
 
   void postToUserWatchlist() async {
     // Listen = false por que esse método só altera o estado global,
@@ -92,31 +96,12 @@ class _MovieDetailState extends State<MovieDetail> {
     print(response.body);
   }
 
-  void fetchMovieDirector() async {
-    var response = await http.get(
-        'https://api.themoviedb.org/3/movie/${widget.idMovie}/credits?api_key=0d278f2443cc885c267b521e19ea320e');
-    var resposta = jsonDecode(response.body);
-    String diretor = '';
-    resposta['crew'].forEach((elemento) {
-      if (elemento['job'] == 'Director') diretor = elemento['name'];
-    });
-    setState(() {
-      this.movieDirector = diretor;
-    });
-  }
-
   @override
   // ignore: must_call_super
   void didChangeDependencies() {
     // ignore: todo
     // TODO: implement didChangeDependencies
     isMovieIn();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    fetchMovieDirector();
   }
 
   @override
@@ -130,7 +115,7 @@ class _MovieDetailState extends State<MovieDetail> {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(this.widget.urlPoster),
+                      image: NetworkImage(widget.urlPoster),
                       fit: BoxFit.cover)),
             ),
             ClipRect(
@@ -145,8 +130,9 @@ class _MovieDetailState extends State<MovieDetail> {
                         children: [
                           Center(
                               child: MovieHeader(
-                            movieDirector:
-                                movieDirector != null ? this.movieDirector : '',
+                            movieDirector: widget.movieDirector != null
+                                ? widget.movieDirector
+                                : '',
                             movieTitle: this.widget.movieTitle,
                           )),
                           Container(
@@ -157,26 +143,57 @@ class _MovieDetailState extends State<MovieDetail> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20)),
                           ),
-                          Text(
-                            this.widget.movieDescription,
-                            style: TextStyle(color: Colors.white),
+                          Flexible(
+                            child: ListView(children: [
+                              Text(
+                                this.widget.movieDescription,
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ]),
                           ),
                           Consumer<JwtModel>(
                             builder: (context, jwtModel, widget) {
                               if (jwtModel.isLogged()) {
                                 return Container(
                                   margin: EdgeInsets.only(top: 20),
-                                  child: ActionButton(
-                                    textButton: isMovieInWatchlist
-                                        ? "Remove from watchlist"
-                                        : "Add to Watchlist",
-                                    verticalPadding: 20,
-                                    horizontalPadding: 30,
-                                    isBlue: isMovieInWatchlist ? false : true,
-                                    onPressedFunc: isMovieInWatchlist
-                                        ? deleteFromWatchlist
-                                        : postToUserWatchlist,
-                                  ),
+                                  child: Row(children: [
+                                    Container(
+                                      margin: EdgeInsets.only(right: 10.0),
+                                      child: ActionButton(
+                                        textButton: isMovieInWatchlist
+                                            ? "Remove from watchlist"
+                                            : "Add to Watchlist",
+                                        verticalPadding: 20,
+                                        horizontalPadding: 25,
+                                        isBlue:
+                                            isMovieInWatchlist ? false : true,
+                                        onPressedFunc: isMovieInWatchlist
+                                            ? deleteFromWatchlist
+                                            : postToUserWatchlist,
+                                      ),
+                                    ),
+                                    ActionButton(
+                                      textButton: "Do a review",
+                                      verticalPadding: 20,
+                                      horizontalPadding: 25,
+                                      onPressedFunc: () {
+                                        Navigator.push(
+                                            context,
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    ReviewPage(
+                                                        movieTitle: this
+                                                            .widget
+                                                            .movieTitle,
+                                                        urlPoster: this
+                                                            .widget
+                                                            .urlPoster,
+                                                        idMovie: this
+                                                            .widget
+                                                            .idMovie)));
+                                      },
+                                    ),
+                                  ]),
                                 );
                               } else
                                 return Container();

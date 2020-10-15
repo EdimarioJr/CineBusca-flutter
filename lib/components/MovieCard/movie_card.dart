@@ -30,7 +30,8 @@ class MovieCard extends StatelessWidget {
                 context,
                 CupertinoPageRoute(
                     builder: (context) => MoviePage(
-                        urlPoster: this.urlCover,
+                        urlPoster:
+                            'https://image.tmdb.org/t/p/w342${this.urlCover}',
                         movieScore: this.movieScore,
                         movieTitle: this.movieTitle,
                         movieDescription: this.movieDescription,
@@ -39,10 +40,13 @@ class MovieCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                urlCover,
-                height: 230,
-              ),
+              Container(
+                  child: urlCover != null
+                      ? Image.network(
+                          'https://image.tmdb.org/t/p/w342$urlCover',
+                          height: 230,
+                        )
+                      : Image(image: AssetImage('assets/cinebusca_logo.png'))),
               Padding(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
@@ -53,12 +57,14 @@ class MovieCard extends StatelessWidget {
                       fontSize: 18),
                 ),
               ),
-              Text(this.movieTitle,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  style: TextStyle(
-                    color: Colors.white,
-                  )),
+              Expanded(
+                child: Text(this.movieTitle,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: TextStyle(
+                      color: Colors.white,
+                    )),
+              ),
             ],
           ),
         ));

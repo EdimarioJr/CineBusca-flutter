@@ -60,7 +60,7 @@ class _GridMoviesState extends State<GridMovies> {
             // Numero de colunas
             crossAxisCount: 2,
             // Define o tamanho da Row da grid, ou o height dos grid items
-            childAspectRatio: 0.54,
+            childAspectRatio: 0.55,
             // os Grid gap
             mainAxisSpacing: 15.0,
             crossAxisSpacing: 15.0,
@@ -76,7 +76,7 @@ class _GridMoviesState extends State<GridMovies> {
                     ));
               } else {
                 return new MovieCard(
-                  urlCover: 'https://image.tmdb.org/t/p/w342$caminhoPoster',
+                  urlCover: caminhoPoster,
                   movieTitle: movies[index]['title'],
                   movieScore: movies[index]['vote_average'].toString(),
                   movieDescription: movies[index]['overview'],

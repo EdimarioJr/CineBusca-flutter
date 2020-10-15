@@ -44,7 +44,7 @@ class _WatchlistPageState extends State<WatchlistPage> {
         movieScore: movie['vote_average'].toString(),
         movieTitle: movie['title'],
         idMovie: movie['id'],
-        urlCover: 'https://image.tmdb.org/t/p/w342${movie['poster_path']}',
+        urlCover: movie['poster_path'],
       ));
     }
     // Seta a watchlist e o numero de items na watchlist

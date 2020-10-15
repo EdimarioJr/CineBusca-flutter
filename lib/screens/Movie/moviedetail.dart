@@ -163,8 +163,8 @@ class _MovieDetailState extends State<MovieDetail> {
                                         textButton: isMovieInWatchlist
                                             ? "Remove from watchlist"
                                             : "Add to Watchlist",
-                                        verticalPadding: 20,
-                                        horizontalPadding: 25,
+                                        verticalPadding: 10,
+                                        horizontalPadding: 15,
                                         isBlue:
                                             isMovieInWatchlist ? false : true,
                                         onPressedFunc: isMovieInWatchlist
@@ -174,8 +174,8 @@ class _MovieDetailState extends State<MovieDetail> {
                                     ),
                                     ActionButton(
                                       textButton: "Do a review",
-                                      verticalPadding: 20,
-                                      horizontalPadding: 25,
+                                      verticalPadding: 10,
+                                      horizontalPadding: 15,
                                       onPressedFunc: () {
                                         Navigator.push(
                                             context,

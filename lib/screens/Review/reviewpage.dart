@@ -68,23 +68,45 @@ class _ReviewPageState extends State<ReviewPage> {
       childWidget: Container(
         margin: EdgeInsets.all(20.0),
         alignment: Alignment.centerLeft,
-        height: 300,
         child: Column(children: [
-          Expanded(
+          Row(
+            children: [
+              widget.urlPoster != null
+                  ? Image.network(widget.urlPoster, height: 130)
+                  : Image(image: AssetImage(widget.urlPoster)),
+              Container(
+                margin: EdgeInsets.only(left: 10.0),
+                child: Text(widget.movieTitle,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold)),
+              )
+            ],
+          ),
+          Container(
+            height: 300,
+            margin: EdgeInsets.symmetric(vertical: 15.0),
             child: TextField(
               maxLines: 1000,
+              autofocus: true,
+              autocorrect: true,
+              textCapitalization: TextCapitalization.sentences,
+              textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               controller: _reviewController,
               decoration: InputDecoration(
+                filled: true,
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.only(left: 10.0),
+                fillColor: Color.fromRGBO(255, 255, 255, 1),
+                contentPadding: const EdgeInsets.all(10.0),
                 hintText: "Escreva aqui sua review",
               ),
             ),
           ),
           ActionButton(
-            textButton: "Atualizar Review",
+            textButton: "Salvar Alterações",
             onPressedFunc: () {
               print(_reviewController.text);
               this.putWatchlist();
